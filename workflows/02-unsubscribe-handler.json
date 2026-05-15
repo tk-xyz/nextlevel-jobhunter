@@ -1,0 +1,88 @@
+{
+  "name": "NextLevel - Unsubscribe Handler",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "unsubscribe",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "22222222-0001-4001-a001-000000000001",
+      "name": "Unsubscribe Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 300]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "language": "javaScript",
+        "jsCode": "const token = ($json.query && $json.query.token) || '';\nif (!token || token.length < 12) throw new Error('Invalid token');\nreturn {json:{unsubscribe_token: token, status:'cancelled'}};"
+      },
+      "id": "22222222-0002-4002-a002-000000000002",
+      "name": "Validate Token",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [480, 300]
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "16jJWwBdwBCKuFx0kwjOAQkU5UjHKcW0z5eireF4Q20s",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": ["unsubscribe_token"]
+        },
+        "options": {}
+      },
+      "id": "22222222-0003-4003-a003-000000000003",
+      "name": "Update Status",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [700, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>Aboneliginiz iptal edildi</title><style>body{font-family:Arial;max-width:520px;margin:80px auto;padding:24px;text-align:center;color:#1f2937}h1{color:#0b5394}p{line-height:1.6}</style></head><body><h1>Aboneliginiz iptal edildi</h1><p>Bir daha rapor almayacaksiniz. Yeniden katilmak isterseniz <a href=\"https://nextleveljobhunter.com\">nextleveljobhunter.com</a> uzerinden tekrar abone olabilirsiniz.</p><p style=\"color:#6b7280;font-size:14px;margin-top:32px\">- NextLevel Ekibi</p></body></html>",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {"name": "Content-Type", "value": "text/html; charset=utf-8"}
+            ]
+          }
+        }
+      },
+      "id": "22222222-0004-4004-a004-000000000004",
+      "name": "Respond HTML",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [920, 300]
+    }
+  ],
+  "connections": {
+    "Unsubscribe Webhook": {
+      "main": [[{"node": "Validate Token", "type": "main", "index": 0}]]
+    },
+    "Validate Token": {
+      "main": [[{"node": "Update Status", "type": "main", "index": 0}]]
+    },
+    "Update Status": {
+      "main": [[{"node": "Respond HTML", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false
+}
