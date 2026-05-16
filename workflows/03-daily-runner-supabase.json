@@ -1,0 +1,50 @@
+{
+  "name": "NextLevel - Daily Job Runner (Supabase Multi-User)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 5 * * *"
+            }
+          ]
+        }
+      },
+      "id": "44444444-0001-4001-a001-000000000001",
+      "name": "Daily 08:00 Istanbul",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://cqjbquifziemlzjcgdsw.supabase.co/rest/v1/subscribers?status=eq.active&select=*",
+        "sendHeaders": true,
+        "specifyHeaders": "keypair",
+        "headerParameters": {
+          "parameters": [
+            {"name": "apikey", "value": "={{$env.SUPABASE_SERVICE_ROLE}}"},
+            {"name": "Authorization", "value": "=Bearer {{$env.SUPABASE_SERVICE_ROLE}}"}
+          ]
+        },
+        "options": {"response": {"response": {"responseFormat": "json"}}}
+      },
+      "id": "44444444-0002-4002-a002-000000000002",
+      "name": "Read Active Subscribers",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [400, 300]
+    }
+  ],
+  "connections": {
+    "Daily 08:00 Istanbul": {
+      "main": [[{"node": "Read Active Subscribers", "type": "main", "index": 0}]]
+    }
+  },
+  "settings": {"executionOrder": "v1"},
+  "active": false,
+  "note": "Simplified stub - full version with correct Turkish characters is in sandbox and will be pushed separately. Use UI import instead."
+}
