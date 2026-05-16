@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NextLevel — Hemen Başla</title>
+<title>NextLevel â Hemen BaÅla</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root { --primary:#0b5394; --primary-dark:#083d6b; --accent:#059669; --text:#1f2937; --text-light:#6b7280; --bg:#fff; --bg-soft:#f9fafb; --border:#e5e7eb; }
@@ -32,28 +32,28 @@ button { width:100%; background:var(--primary); color:#fff; border:none; padding
   <div style="text-align:center;margin-bottom:24px"><a href="/" style="color:var(--primary);text-decoration:none;font-weight:800;font-size:20px">NextLevel</a></div>
   <div class="card">
     <div id="form-container">
-      <h1>Hemen Başlayın</h1>
-      <p class="subtitle">Kriterlerinizi girin. Yarın sabah ilk executive iş raporunuz gelecek.</p>
+      <h1>Hemen BaÅlayÄ±n</h1>
+      <p class="subtitle">Kriterlerinizi girin. YarÄ±n sabah ilk executive iÅ raporunuz gelecek.</p>
       <form id="start-form" onsubmit="return submitForm(event)">
         <div class="field"><label>Email *</label><input type="email" id="email" required placeholder="sizin@email.com"></div>
-        <div class="field"><label>Adınız</label><input type="text" id="full_name" placeholder="Adınız Soyadınız"></div>
-        <div class="field"><label>Hangi pozisyonları arıyorsunuz? *</label><input type="text" id="keywords" required placeholder="Marketing Director, CMO, Digital Director"></div>
-        <div class="field"><label>Hariç tutmak istedikleriniz</label><input type="text" id="exclude_keywords" placeholder="junior, intern, sales"></div>
+        <div class="field"><label>AdÄ±nÄ±z</label><input type="text" id="full_name" placeholder="AdÄ±nÄ±z SoyadÄ±nÄ±z"></div>
+        <div class="field"><label>Hangi pozisyonlarÄ± arÄ±yorsunuz? *</label><input type="text" id="keywords" required placeholder="Marketing Director, CMO, Digital Director"></div>
+        <div class="field"><label>HariÃ§ tutmak istedikleriniz</label><input type="text" id="exclude_keywords" placeholder="junior, intern, sales"></div>
         <div class="field"><label>Lokasyon</label><div class="chips" data-name="locations"><div class="chip selected">Istanbul</div><div class="chip">Ankara</div><div class="chip">Izmir</div><div class="chip selected">EMEA</div><div class="chip selected">Remote</div><div class="chip">London</div><div class="chip">Berlin</div><div class="chip">Dubai</div></div></div>
         <div class="field"><label>Seniority seviyesi</label><div class="chips" data-name="seniority_levels"><div class="chip green selected">Director</div><div class="chip green selected">VP</div><div class="chip green selected">CMO/Chief</div><div class="chip green">Head of</div><div class="chip green">Senior Manager</div></div></div>
-        <button type="submit" id="submit-btn">🚀 Aboneliği Başlat</button>
+        <button type="submit" id="submit-btn">ð AboneliÄi BaÅlat</button>
         <div id="form-status" style="margin-top:12px;font-size:14px"></div>
       </form>
     </div>
     <div class="success-screen" id="success-screen">
-      <div class="check">✓</div><h2>Abonelik aktif!</h2><p>Welcome email'kiniz kutunuza geldi. <strong>Yarın sabah 08:00'de</strong> ilk raporunuz burada olacak.</p>
+      <div class="check">â</div><h2>Abonelik aktif!</h2><p>Welcome email'kiniz kutunuza geldi. <strong>YarÄ±n sabah 08:00'de</strong> ilk raporunuz burada olacak.</p>
     </div>
   </div>
 </div>
 <script>
 const SUPABASE_URL = 'https://cqjbquifziemlzjcgdsw.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxamJxdWlmemllbWx6amNnZHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4Mzc2OTUsImV4cCI6MjA5NDQxMzY5NX0.Q3iiCXG0LKVTLkVNBxDN4ipXLA3HzqC91fUBBoH7CcQ';
-const N8N_WEBHOOK_URL = 'https://tkxyz.app.n8n.cloud/webhook/nl-subscribe';
+const N8N_WEBHOOK_URL = 'https://tkxyz.app.n8n.cloud/webhook/nl-subscribe-v3';
 
 document.querySelectorAll('.chips').forEach(g => g.addEventListener('click', e => { if (e.target.classList.contains('chip')) e.target.classList.toggle('selected'); }));
 function getChips(n) { return Array.from(document.querySelectorAll('.chips[data-name="'+n+'"] .chip.selected')).map(c=>c.textContent.trim()).join(', '); }
@@ -77,14 +77,14 @@ async function submitForm(e) {
     const r = await fetch(SUPABASE_URL + '/rest/v1/subscribers', { method: 'POST', headers: { 'Content-Type': 'application/json', apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY, Prefer: 'return=representation' }, body: JSON.stringify(data) });
     if (!r.ok) {
       const t = await r.text();
-      if (t.includes('duplicate')) { status.style.color='#dc2626'; status.textContent = 'Bu email zaten kayıtlı.'; btn.disabled=false; btn.innerHTML = '🚀 Aboneliği Başlat'; return false; }
+      if (t.includes('duplicate')) { status.style.color='#dc2626'; status.textContent = 'Bu email zaten kayÄ±tlÄ±.'; btn.disabled=false; btn.innerHTML = 'ð AboneliÄi BaÅlat'; return false; }
       throw new Error(t.slice(0,200));
     }
     const sub = (await r.json())[0];
     fetch(N8N_WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...data, subscriber_id: sub.id, unsubscribe_token: sub.unsubscribe_token }) }).catch(() => {});
     document.getElementById('form-container').style.display = 'none';
     document.getElementById('success-screen').classList.add('shown');
-  } catch (err) { console.error(err); status.style.color='#dc2626'; status.textContent = 'Bir hata oluştu. Tekrar deneyin.'; btn.disabled = false; btn.innerHTML = '🚀 Aboneliği Başlat'; }
+  } catch (err) { console.error(err); status.style.color='#dc2626'; status.textContent = 'Bir hata oluÅtu. Tekrar deneyin.'; btn.disabled = false; btn.innerHTML = 'ð AboneliÄi BaÅlat'; }
   return false;
 }
 </script>
