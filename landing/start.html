@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NextLevel — Hemen Başla</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root { --primary:#0b5394; --primary-dark:#083d6b; --accent:#059669; --text:#1f2937; --text-light:#6b7280; --bg:#fff; --bg-soft:#f9fafb; --border:#e5e7eb; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'Inter',sans-serif; color:var(--text); line-height:1.5; background:linear-gradient(180deg,#f0f7ff 0%,#fff 100%); min-height:100vh; padding:40px 20px; }
+.container { max-width:640px; margin:0 auto; }
+.brand { text-align:center; margin-bottom:24px; }
+.brand a { color:var(--primary); text-decoration:none; font-weight:800; font-size:20px; }
+.card { background:#fff; border:1px solid var(--border); border-radius:14px; padding:36px 32px; box-shadow:0 4px 24px rgba(11,83,148,0.08); }
+h1 { font-size:26px; margin-bottom:6px; }
+.subtitle { color:var(--text-light); margin-bottom:28px; font-size:15px; }
+.field { margin-bottom:18px; }
+.field label { display:block; font-weight:600; font-size:13px; margin-bottom:6px; }
+.field .hint { font-size:12px; color:var(--text-light); margin-top:4px; }
+.field input[type="text"], .field input[type="email"] { width:100%; border:1px solid var(--border); padding:10px 12px; border-radius:8px; font-size:14px; font-family:inherit; outline:none; transition:border 0.15s; }
+.field input:focus { border-color:var(--primary); }
+.chips { display:flex; flex-wrap:wrap; gap:6px; }
+.chip { background:var(--bg-soft); border:1px solid var(--border); padding:6px 12px; border-radius:14px; font-size:12px; cursor:pointer; user-select:none; transition:all 0.15s; }
+.chip:hover { border-color:var(--primary); }
+.chip.selected { background:var(--primary); color:#fff; border-color:var(--primary); }
+.chip.green.selected { background:var(--accent); border-color:var(--accent); }
+.lang-row { display:flex; gap:16px; }
+.lang-row label { font-weight:400; cursor:pointer; }
+button[type="submit"] { width:100%; background:var(--primary); color:#fff; border:none; padding:14px; border-radius:8px; font-weight:700; font-size:15px; cursor:pointer; margin-top:8px; transition:all 0.15s; }
+button[type="submit"]:hover { background:var(--primary-dark); }
+button[type="submit"]:disabled { opacity:0.6; cursor:not-allowed; }
+.status { margin-top:14px; padding:12px; border-radius:6px; font-size:14px; display:none; }
+.status.success { background:#f0fdf4; color:#065f46; display:block; border:1px solid #bbf7d0; }
+.status.error { background:#fef2f2; color:#991b1b; display:block; border:1px solid #fecaca; }
+.privacy { font-size:12px; color:var(--text-light); margin-top:16px; line-height:1.5; }
+.success-screen { display:none; text-align:center; padding:20px; }
+.success-screen.shown { display:block; }
+.success-screen h2 { color:var(--accent); margin-bottom:12px; }
+.success-screen .check { font-size:48px; margin-bottom:8px; }
+.lang-toggle { position:absolute; top:20px; right:24px; }
+.lang-toggle button { background:rgba(255,255,255,0.8); border:1px solid var(--border); padding:5px 10px; border-radius:5px; cursor:pointer; font-size:12px; font-weight:600; margin-left:4px; }
+.lang-toggle button.active { background:var(--primary); color:#fff; border-color:var(--primary); }
+.tr { display:block; } .en { display:none; }
+body.lang-en .tr { display:none; } body.lang-en .en { display:block; }
+body.lang-en .tr-inline { display:none; } body.lang-en .en-inline { display:inline; }
+.en-inline { display:none; } .tr-inline { display:inline; }
+@media(max-width:520px){ .card { padding:24px 18px; } h1 { font-size:22px; } }
+</style>
+</head>
+<body>
+
+<div class="lang-toggle">
+  <button id="btn-tr" class="active" onclick="setLang('tr')">TR</button>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+
+<div class="container">
+  <div class="brand"><a href="/">NextLevel</a></div>
+
+  <div class="card">
+    <div id="form-container">
+      <div class="tr"><h1>Hemen Başlayın</h1><p class="subtitle">Kriterlerinizi girin. Yarın sabah 08:00'de ilk executive iş raporunuz gelecek.</p></div>
+      <div class="en"><h1>Get Started</h1><p class="subtitle">Enter your criteria. Tomorrow morning at 08:00 you'll get your first executive job report.</p></div>
+
+      <form id="start-form" onsubmit="return submitForm(event)">
+        <div class="field">
+          <label><span class="tr-inline">Email</span><span class="en-inline">Email</span> *</label>
+          <input type="email" id="email" name="email" required placeholder="sizin@email.com">
+        </div>
+
+        <div class="field">
+          <label><span class="tr-inline">Adınız</span><span class="en-inline">Your Name</span></label>
+          <input type="text" id="full_name" name="full_name" placeholder="Adınız Soyadınız">
+        </div>
+
+        <div class="field">
+          <label><span class="tr-inline">Hangi pozisyonları arıyorsunuz?</span><span class="en-inline">What positions are you looking for?</span> *</label>
+          <input type="text" id="keywords" name="keywords" required placeholder="Marketing Director, CMO, Digital Director">
+          <div class="hint tr-inline">Virgülle ayırın</div>
+          <div class="hint en-inline">Comma-separated</div>
+        </div>
+
+        <div class="field">
+          <label><span class="tr-inline">Hariç tutmak istedikleriniz</span><span class="en-inline">Exclude</span></label>
+          <input type="text" id="exclude_keywords" name="exclude_keywords" placeholder="junior, intern, sales">
+        </div>
+
+        <div class="field">
+          <label><span class="tr-inline">Lokasyon</span><span class="en-inline">Location</span></label>
+          <div class="chips" data-name="locations">
+            <div class="chip selected">Istanbul</div>
+            <div class="chip">Ankara</div>
+            <div class="chip">Izmir</div>
+            <div class="chip selected">EMEA</div>
+            <div class="chip selected">Remote</div>
+            <div class="chip">London</div>
+            <div class="chip">Berlin</div>
+            <div class="chip">Dubai</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label><span class="tr-inline">Seniority seviyesi</span><span class="en-inline">Seniority Level</span></label>
+          <div class="chips" data-name="seniority_levels">
+            <div class="chip green selected">Director</div>
+            <div class="chip green selected">VP</div>
+            <div class="chip green selected">CMO/Chief</div>
+            <div class="chip green">Head of</div>
+            <div class="chip green">Senior Manager</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label><span class="tr-inline">Sektör tercihleri</span><span class="en-inline">Industry Preferences</span></label>
+          <div class="chips" data-name="industries_preferred">
+            <div class="chip">FMCG</div>
+            <div class="chip">Perakende / Retail</div>
+            <div class="chip">Otomotiv / Auto</div>
+            <div class="chip">Yapı Malzemeleri</div>
+            <div class="chip">SaaS / Tech</div>
+            <div class="chip">Pharma</div>
+            <div class="chip">Konaklama / Hospitality</div>
+            <div class="chip">Finance</div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label><span class="tr-inline">Rapor dili</span><span class="en-inline">Report Language</span></label>
+          <div class="lang-row">
+            <label><input type="radio" name="language" value="tr" checked> Türkçe</label>
+            <label><input type="radio" name="language" value="en"> English</label>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn">
+          <span class="tr-inline">🚀 Aboneliği Başlat</span>
+          <span class="en-inline">🚀 Start Subscription</span>
+        </button>
+
+        <div id="form-status" class="status"></div>
+
+        <p class="privacy">
+          <span class="tr-inline">✓ Email'iniz kimseyle paylaşılmaz · ✓ Tek tıkla iptal · ✓ KVKK uyumlu · İlk 100 abone <strong>3 ay Pro ücretsiz</strong></span>
+          <span class="en-inline">✓ Your email stays private · ✓ One-click cancel · ✓ GDPR compliant · First 100 subscribers get <strong>3 months Pro free</strong></span>
+        </p>
+      </form>
+    </div>
+
+    <div class="success-screen" id="success-screen">
+      <div class="check">✓</div>
+      <div class="tr"><h2>Abonelik aktif!</h2><p>Welcome email'iniz kutunuza geldi. <strong>Yarın sabah 08:00'de</strong> ilk executive iş raporunuz orada olacak.</p></div>
+      <div class="en"><h2>Subscription active!</h2><p>Welcome email is in your inbox. Your first executive job report arrives <strong>tomorrow at 08:00</strong>.</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ CONFIGURATION ============
+// Bu 3 değişkeni Supabase project'inizden alın ve değiştirin:
+//   1. SUPABASE_URL = Project Settings → API → URL (https://xxxxx.supabase.co)
+//   2. SUPABASE_ANON_KEY = Project Settings → API → anon public key
+//   3. (opsiyonel) N8N_WEBHOOK_URL = n8n'de Subscribe Handler webhook URL'i (welcome email için)
+const SUPABASE_URL = 'https://cqjbquifziemlzjcgdsw.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNxamJxdWlmemllbWx6amNnZHN3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4Mzc2OTUsImV4cCI6MjA5NDQxMzY5NX0.Q3iiCXG0LKVTLkVNBxDN4ipXLA3HzqC91fUBBoH7CcQ';
+const N8N_WEBHOOK_URL = 'https://tkxyz.app.n8n.cloud/webhook/subscribe';
+// =======================================
+
+function setLang(lang) {
+  document.body.classList.toggle('lang-en', lang === 'en');
+  document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.querySelector('input[name="language"][value="'+lang+'"]').checked = true;
+  localStorage.setItem('nextlevel-lang', lang);
+}
+setLang(localStorage.getItem('nextlevel-lang') || (navigator.language.startsWith('tr') ? 'tr' : 'en'));
+
+document.querySelectorAll('.chips').forEach(group => {
+  group.addEventListener('click', e => {
+    if (e.target.classList.contains('chip')) e.target.classList.toggle('selected');
+  });
+});
+
+function getChips(name) {
+  const sel = document.querySelectorAll('.chips[data-name="'+name+'"] .chip.selected');
+  return Array.from(sel).map(c => c.textContent.trim()).join(', ');
+}
+
+async function submitForm(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const status = document.getElementById('form-status');
+  const isEn = document.body.classList.contains('lang-en');
+
+  const data = {
+    email: document.getElementById('email').value.trim().toLowerCase(),
+    full_name: document.getElementById('full_name').value.trim(),
+    keywords: document.getElementById('keywords').value.trim(),
+    exclude_keywords: document.getElementById('exclude_keywords').value.trim(),
+    locations: getChips('locations'),
+    seniority_levels: getChips('seniority_levels'),
+    industries_preferred: getChips('industries_preferred'),
+    sources_enabled: 'adzuna,jsearch,themuse',
+    language: document.querySelector('input[name="language"]:checked').value
+  };
+
+  if (!data.email || !data.keywords) {
+    status.className = 'status error';
+    status.textContent = isEn ? 'Email and keywords are required' : 'Email ve pozisyon zorunlu';
+    return false;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '...';
+
+  try {
+    // 1) Supabase'e direkt yaz (RLS anon INSERT policy gerek)
+    const supaRes = await fetch(SUPABASE_URL + '/rest/v1/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!supaRes.ok) {
+      const errText = await supaRes.text();
+      // Email zaten kayıtlıysa farklı mesaj
+      if (errText.includes('duplicate') || errText.includes('unique')) {
+        status.className = 'status error';
+        status.textContent = isEn ? 'This email is already subscribed.' : 'Bu email zaten kayıtlı.';
+        btn.disabled = false;
+        btn.innerHTML = isEn ? '🚀 Start Subscription' : '🚀 Aboneliği Başlat';
+        return false;
+      }
+      throw new Error('Supabase: ' + errText.slice(0, 200));
+    }
+
+    const created = await supaRes.json();
+    const subscriber = Array.isArray(created) ? created[0] : created;
+
+    // 2) n8n'e webhook gönder (welcome email için, optional)
+    if (N8N_WEBHOOK_URL && N8N_WEBHOOK_URL.startsWith('http')) {
+      fetch(N8N_WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...data, subscriber_id: subscriber.id, unsubscribe_token: subscriber.unsubscribe_token })
+      }).catch(() => {}); // hata sessizce yutulur (Supabase ana truth source)
+    }
+
+    // 3) Success screen göster
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('success-screen').classList.add('shown');
+    if (window.plausible) plausible('Subscription');
+
+  } catch (err) {
+    console.error(err);
+    status.className = 'status error';
+    status.textContent = isEn
+      ? 'Something went wrong. Please try again or email hello@nextleveljobhunter.com'
+      : 'Bir sorun çıktı. Tekrar deneyin veya hello@nextleveljobhunter.com adresine yazın.';
+    btn.disabled = false;
+    btn.innerHTML = isEn ? '🚀 Start Subscription' : '🚀 Aboneliği Başlat';
+  }
+  return false;
+}
+</script>
+
+</body>
+</html>
